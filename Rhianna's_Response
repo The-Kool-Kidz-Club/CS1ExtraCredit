@@ -1,0 +1,190 @@
+// Rhianna Dains
+// May 10, 2023
+// CS 1 Extra Credit Project: A Program Allowing Two Users to Play Tic-Tac-Toe!
+
+#include <iostream>
+using namespace std;
+
+// Function Prototype
+void printBoard(char board[3][3]);
+int playerTurn(char board[3][3], char currentPlayer);
+int getRowForPosition(int position);
+int getColForPosition(int position);
+char getNextPlayer(char currentPlayer);
+bool checkForWinner(char board[3][3]);
+bool checkRows(char board[3][3]);
+bool checkCols(char board[3][3]);
+bool checkDiagonal(char board[3][3]);
+
+int main()
+{
+    char board[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
+    char currentPlayer = 'X';
+    int query = 0;
+    bool gameOver = false;
+    int turnCounter = 1;
+
+    cout << "Hello! Welcome to tic-tak-toe!" << endl;
+
+    while (!gameOver)
+    {
+        cout << "It is player " << currentPlayer << "'s turn." << endl;
+
+        // Call Board
+        printBoard(board);
+
+        // Call Player Turn Function
+        playerTurn(board, currentPlayer);
+
+        // Check to See if the Game is Over
+        gameOver = checkForWinner(board);
+
+        if (gameOver == true)
+        {
+            cout << currentPlayer << " Wins! Congratulations!" << endl;
+        }
+        else
+        {
+            turnCounter++;
+
+            if (turnCounter > 9)
+            {
+                gameOver = true;
+            }
+            else
+            {
+                // Update to Next Player
+                currentPlayer = getNextPlayer(currentPlayer);
+            }
+        }
+    }
+    printBoard(board);
+
+    return 0;
+}
+
+// Function Definition: Print Board
+void printBoard(char board[][3])
+{
+    for (int rows = 0; rows < 3; rows++)
+    {
+        for (int columns = 0; columns < 3; columns++)
+        {
+            std::cout << " " << board[rows][columns];
+        }
+
+        std::cout << std::endl;
+    }
+}
+
+// Function Definition: Player Turn
+int playerTurn(char board[3][3], char currentPlayer)
+{
+    int position;
+
+    cout << "Enter your chosen position: ";
+    cin >> position;
+
+    int row = getRowForPosition(position);
+    int col = getColForPosition(position);
+
+    board[row][col] = currentPlayer;
+}
+
+// Function Definition: Row Index
+int getRowForPosition(int position)
+{
+    if (position >= 1 && position <= 3)
+    {
+        return 0;
+    }
+
+    if (position >= 4 && position <= 6)
+    {
+        return 1;
+    }
+
+    if (position >= 7 && position <= 9)
+    {
+        return 2;
+    }
+}
+
+// Function Definition: Column Index
+int getColForPosition(int position)
+{
+    if (position == 1 || position == 4 || position == 7)
+    {
+        return 0;
+    }
+
+    if (position == 2 || position == 5 || position == 8)
+    {
+        return 1;
+    }
+
+    if (position == 3 || position == 6 || position == 9)
+    {
+        return 2;
+    }
+}
+
+// Function Definition: Current Player
+char getNextPlayer(char currentPlayer)
+{
+    if (currentPlayer == 'X')
+    {
+        return 'O';
+    }
+    else
+    {
+        return 'X';
+    }
+}
+
+// Function Definition: Check For Game Winner
+bool checkForWinner(char board[3][3])
+{
+    return checkRows(board) || checkCols(board) || checkDiagonal(board);
+}
+
+// Function Definition: Check Rows
+bool checkRows(char board[3][3])
+{
+    if (
+        (board[0][0] == board[0][1] && board[0][0] == board[0][2]) ||
+        (board[1][0] == board[1][1] && board[1][0] == board[1][2]) ||
+        (board[2][0] == board[2][1] && board[2][0] == board[2][2]))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+// Function Definition: Check Columns
+bool checkCols(char board[3][3])
+{
+    if (
+        (board[0][0] == board[1][0] && board[0][0] == board[2][0]) ||
+        (board[0][1] == board[1][1] && board[0][1] == board[2][1]) ||
+        (board[0][2] == board[1][2] && board[0][2] == board[2][2]))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+// Function Definition: Check Diagonal
+bool checkDiagonal(char board[3][3])
+{
+    if (
+        (board[0][0] == board[1][1] && board[0][0] == board[2][2]) ||
+        (board[0][2] == board[1][1] && board[0][2] == board[2][0]))
+    {
+        return true;
+    }
+
+    return false;
+}
